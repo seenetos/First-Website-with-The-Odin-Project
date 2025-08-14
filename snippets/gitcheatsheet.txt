@@ -1,39 +1,86 @@
-#Git Cheatsheet:
-    This is a reference list of the most commonly used Git commands. (You might consider bookmarking this handy page.) Try to familiarize yourself with the commands so that you can eventually remember them all:
+# Git Cheatsheet
+A compact reference for the most common Git tasks. Learn the flow so it
+becomes muscle memory.
 
-    Commands related to a remote repository:
-        git clone git@github.com:USER-NAME/REPOSITORY-NAME.git
-        git push or git push origin main (Both accomplish the same goal in this context)
-        Commands related to the workflow:
-        git add .
-        git commit -m "A message describing what you have done to make this snapshot different"
-        Commands related to checking status or log history
-        git status
-        git log
-        The basic Git syntax is program | action | destination.
+──────────────────────────────────────────────────────────────────────────────
+SETUP (one-time, per machine)
+──────────────────────────────────────────────────────────────────────────────
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main
+git config --global pull.rebase true          # pulls rebase by default (cleaner history)
+git config --global core.editor "code --wait" # use VS Code for commit messages
 
-For example,
+SSH (recommended):
+ssh-keygen -t ed25519 -C "you@example.com"
+# add ~/.ssh/id_ed25519.pub to GitHub → Settings → SSH keys
+ssh -T git@github.com  # test
 
-    git add . is read as git | add | ., where the period represents everything in the current directory;
-    git commit -m "message" is read as git | commit -m | "message"; and
-    git status is read as git | status | (no destination).
-    Git best practices
-    There’s a lot to learn about using Git. But it is worth taking the time to highlight some best practices so that you can be a better collaborator. Git is not only helpful when collaborating with others. It’s also useful when working independently. You will be relying more and more on your own commit history in the future when revisiting old code.
+──────────────────────────────────────────────────────────────────────────────
+REMOTE REPOS
+──────────────────────────────────────────────────────────────────────────────
+git clone git@github.com:USER/REPO.git        # clone with SSH
+git remote -v                                 # list remotes
+git branch -M main                            # rename current branch to main
 
-Two helpful best practices to consider are atomic commits and leveraging those atomic commits to make your commit messages more useful to future collaborators.
+# First push from a new repo/branch (sets upstream):
+git push -u origin main
 
-An atomic commit is a commit that includes changes related to only one feature or task of your program. There are two main reasons for doing this: first, if something you change turns out to cause some problems, it is easy to revert the specific change without losing other changes; and second, it enables you to write better commit messages. You’ll learn more about what a good commit message looks like in a future lesson!
+# Later pushes (after upstream is set):
+git push                                       # equivalent to 'git push origin main' ONLY IF upstream is set
 
-Changing the Git commit message editor
-If you are using Visual Studio Code (and you should be if you’re following this curriculum), there’s a way to ensure that if you use git commit without the message flag (-m), you won’t get stuck writing your commit message in Vim.
+──────────────────────────────────────────────────────────────────────────────
+DAILY WORKFLOW
+──────────────────────────────────────────────────────────────────────────────
+git status                                     # what's changed / staged / untracked
+git add .                                      # stage everything in the folder
+git add -p                                     # stage changes interactively (hunks)
+git commit -m "Brief, imperative summary"      # snapshot
 
-Changing the default message editor is a good idea in case you accidentally omit the flag, unless you prefer using Vim. There is no downside to changing it, because you will have the option to write your commit messages in the terminal or in the comfort of VS Code.
+git pull                                       # fetch + rebase (because of pull.rebase=true)
+git push                                       # publish your commits
 
-The following command will set this configuration. Type (or copy & paste) this command into your terminal and hit Enter.
+──────────────────────────────────────────────────────────────────────────────
+HISTORY & DIFFS
+──────────────────────────────────────────────────────────────────────────────
+git log --oneline --graph --decorate --all     # compact, readable history
+git log -p                                     # history with patches
+git diff                                       # unstaged differences
+git diff --staged                              # what’s staged vs last commit
 
-git config --global core.editor "code --wait"
-There will be no confirmation or any output on the terminal after entering this command.
+──────────────────────────────────────────────────────────────────────────────
+BRANCHING
+──────────────────────────────────────────────────────────────────────────────
+git switch -c feature/short-name               # create + switch to a new branch
+git switch main                                # go back to main
+git merge feature/short-name                   # merge feature into current branch
+# or rebase your feature onto latest main:
+git switch feature/short-name
+git rebase main
 
-With that done, you can now choose to use either git commit -m "your message here" or git commit to type your message with Visual Studio Code!
+──────────────────────────────────────────────────────────────────────────────
+UNDO / FIXUPS
+──────────────────────────────────────────────────────────────────────────────
+git restore path/file                          # discard WORKING changes in a file
+git restore --staged path/file                 # unstage (keep working changes)
+git commit --amend                             # change the last commit message/files (if not pushed)
+git revert <commit>                            # new commit that undoes a specific commit (safe on shared branches)
 
-To make a commit with Visual Studio Code as the text editor, just type git commit. After you hit Enter a new tab in VS Code will open for you to write your commit message. You may provide more details on multiple lines as part of your commit message. After typing your commit message, save it Ctrl + S (Mac: Cmd + S) and close the tab. If you return to the command line, you will see your commit message and a summary of your changes.
+──────────────────────────────────────────────────────────────────────────────
+MENTAL MODEL
+──────────────────────────────────────────────────────────────────────────────
+Basic syntax:  git | action | destination
+
+Examples:
+- git add .            → program | action | everything-here
+- git commit -m "..."  → program | action -m | message
+- git status           → program | action    | (no destination)
+
+──────────────────────────────────────────────────────────────────────────────
+BEST PRACTICES
+──────────────────────────────────────────────────────────────────────────────
+• Make atomic commits: one logical change per commit.
+• Write imperative, present-tense messages:
+  "Fix nav spacing" (not "Fixed" or "Fixes nav spacing").
+• Push often; pull (rebase) before you start new work.
+• Use branches for features; merge/rebase when done.

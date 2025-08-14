@@ -1,59 +1,89 @@
-#HTML Cheatsheet
+# HTML Cheatsheet
+Quick references you’ll actually use.
 
-HTML Boilerplate:
-
+──────────────────────────────────────────────────────────────────────────────
+HTML5 BOILERPLATE (minimal)
+──────────────────────────────────────────────────────────────────────────────
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My First Webpage</title>
   </head>
-
   <body>
   </body>
 </html>
 
+Why it matters:
+• <!DOCTYPE html> → standards mode (modern HTML)
+• lang="en" → accessibility & SEO
+• meta viewport → proper scaling on mobile
+• title → tab text / bookmarking
 
-<strong></strong> = bold text, <em></em> = italic style text
+──────────────────────────────────────────────────────────────────────────────
+TEXT & EMPHASIS
+──────────────────────────────────────────────────────────────────────────────
+<strong>…</strong>  → strong importance (often renders bold)
+<em>…</em>          → emphasis (often renders italic)
 
+Tip: These are semantic, not just “bold/italic.” Screen readers announce them.
 
-Lists:
-    Unordered List:
-        <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
-        </ul>
+──────────────────────────────────────────────────────────────────────────────
+LISTS
+──────────────────────────────────────────────────────────────────────────────
+Unordered:
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
 
-    Ordered List:
-        <ol>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
-        </ol>
+Ordered:
+<ol>
+  <li>Step 1</li>
+  <li>Step 2</li>
+</ol>
 
+──────────────────────────────────────────────────────────────────────────────
+LINKS (ANCHORS)
+──────────────────────────────────────────────────────────────────────────────
+<a href="https://www.theodinproject.com/about"
+   target="_blank"
+   rel="noopener noreferrer">About The Odin Project</a>
 
-Anchor and hypertext reference (link) example:
-    <a href="https://www.theodinproject.com/about" target="_blank" rel="noopener noreferrer">About The Odin Project</a>
+Notes:
+• target="_blank" → open in new tab
+• rel="noopener" → new tab cannot control the opener (security)
+• rel="noreferrer" → also hides the referrer (privacy) and implies noopener
+• Use same-tab links for your own pages (internal navigation) by default.
 
-        In this code: 
-            target=”_blank”: opens the link in a new tab. rel=”noopener”: prevents the new tab from accessing the original page, ensuring security. Without noopener, the new tab could use JavaScript to interact with the original page, which is unsafe.
+──────────────────────────────────────────────────────────────────────────────
+PATHS: ABSOLUTE vs RELATIVE
+──────────────────────────────────────────────────────────────────────────────
+Absolute URL (web):
+  https://example.com/assets/logo.png
 
-    noreferrer: 
-        The noreferrer value of the rel attribute provides both privacy and security. It prevents the new page from knowing where the user came from (hiding the referrer) and also includes the behavior of noopener, preventing the new page from accessing the original page.
+Relative (filesystem inside your project):
+  ./pages/about.html   → current folder (.)
+  ../images/dog.jpg    → parent folder (..)
 
+Tip: Relative paths depend on the current file’s location.
 
-    Absolute and relative links:
-        Generally, there are two kinds of links we will create:
+──────────────────────────────────────────────────────────────────────────────
+IMAGES
+──────────────────────────────────────────────────────────────────────────────
+Absolute URL example:
+<img src="https://www.theodinproject.com/mstile-310x310.png"
+     alt="The Odin Project logo"
+     width="310" height="310" loading="lazy">
 
-        Links to pages on other websites on the internet.
-        Links to pages located on our own websites.
+Relative path example (from /pages/file.html):
+<img src="../images/dog.jpg"
+     alt="Pug looking at the camera"
+     width="310" height="310" loading="lazy">
 
-    
-Example adding image:
-    <img src="https://www.theodinproject.com/mstile-310x310.png" alt="The Odin Project Logo" height="310" width="310"> (relative link in example)
-
-        Alt attribute:
-            Besides the src attribute, every image element should also have an alt (alternative text) attribute.
-        Image size attributes:
-            While not strictly required, specifying height and width attributes in image tags helps the browser layout the page without causing the page to jump and flash.
+Notes:
+• Always include meaningful alt text (accessibility). If decorative, alt="".
+• width/height help reserve layout space. Keep aspect ratio correct.
+• Use CSS to control display size; attributes define intrinsic size.
+• loading="lazy" defers off-screen images for performance.
