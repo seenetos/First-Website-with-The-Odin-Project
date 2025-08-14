@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="utf-8"> <!-- Sets the character encoding; UTF-8 handles most languages/symbols correctly. -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Ensures the layout scales on mobile (1 CSS pixel = 1 device pixel). Essential for responsive pages. -->
         <title>Homepage</title>
+        <link rel="stylesheet" href="css/style.css"> <!-- Links the shared stylesheet. Path is from project root → css/style.css. On pages/* you'll need ../css/style.css -->
     </head>
 
     <body>
-            <h1>Homepage</h1>
-            <!-- <a href="$$$$" >Text</a> creates a link and means hypertext reference -->
-           <h2><a href="./pages/cheatsheet.html" >My Personal Cheatsheet</a></h2>
-        <!-- target=”_blank”: opens the link in a new tab. 
-        rel=”noopener”: prevents the new tab from accessing the original page, ensuring security.
-        Without noopener, the new tab could use JavaScript to interact with the original page, 
-        which is unsafe. -->
+        <h1>Homepage</h1>
+
+        <!-- Primary site navigation landmark. Screen readers can jump to this region quickly. -->
+        <nav aria-label="Primary">
+            <!-- Grouping nav items as a list communicates that these links belong together. -->
+            <ul> 
+                <!-- Current page marked with aria-current="page" → helps assistive tech and lets CSS highlight it. -->
+                <li><a href="./index.html" aria-current="page">Home</a></li>
+                <!-- Internal links generally open in the same tab. Relative path from root works: ./pages/... -->
+                <li><a href="./pages/cheatsheet.html">My Personal Cheatsheet</a></li>
+                <li><a href="./pages/about.html">About</a></li>
+            </ul>
+        </nav>
+
+        <!-- External link with security attributes. target="_blank" opens a new tab; rel="noopener" prevents tab hijacking. -->
         <p><a href="https://www.theodinproject.com/about" target="_blank" rel="noopener">About The Odin Project</a></p>
-        <!-- noreferrer: The noreferrer value of the rel attribute provides both privacy 
-         and security. It prevents the new page from knowing where the user came from 
-         (hiding the referrer) and also includes the behavior of noopener, 
-         preventing the new page from accessing the original page.-->
-        <p><a href="https://example.com" target="_blank" rel="noreferrer">Visit Example</a></p>
-
-        <p><a href="./pages/about.html">About</a></p>
-
-        <img src="./images/dog.jpg" alt="image of a pug" height="310" width="310">
-
-
 
     </body>
-
 </html>
